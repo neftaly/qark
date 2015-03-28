@@ -1,0 +1,70 @@
+button:focus {
+    outline: 0 !important;
+}
+
+
+/**
+ * Temporary
+ */
+
+.branchContainer {
+    scroll-behavior: smooth;
+}
+
+
+.flexRowContainer,
+.flexColumnContainer {
+    display: -webkit-flex;
+    display: flex;
+}
+
+.flexRowContainer {
+    -webkit-flex-direction: row;
+    flex-direction: row;
+}
+
+.flexColumnContainer {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+}
+
+.flex {
+    -webkit-flex: 1 0 0;
+    flex: 1 0 0;
+}
+
+
+.flexRowContainer .flex.progress {
+    display: inline-box;
+    width: 5em;
+    line-height: 1.4;
+    font-size: 15px;
+    height: calc(2em + 7px);
+    margin: 0;
+}
+
+
+
+.activeLeaf {
+    font-weight: bold;
+    overflow: hidden;
+}
+
+.panel {
+    margin-bottom: 0;
+    background-color: #fafafa;
+    border-bottom: 0px;
+}
+
+.leaf .list-group .list-group-item {
+    border: 0px;
+}
+
+.leaf {
+    border: 1px solid #ddd;
+    border-width: 0px 0px 1px 0px;
+}
+
+.leaf:first-child {
+    border-top-width: 1px;
+}
