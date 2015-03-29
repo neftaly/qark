@@ -1,7 +1,7 @@
 "use strict";
 
 import React from "react";
-import { shouldComponentUpdate } from "omniscient";
+import component from "omniscient";
 import R from "ramda";
 import {
     Modal,
@@ -19,34 +19,30 @@ import {
  * @namespace components
  * @param {Immstruct.cursor} props.rootCursor
  */
-export default React.createClass({
-    mixins: [{ shouldComponentUpdate }],
+const SaveModal = component(({ rootCursor }) => {
+    //let stateCursor = cursor.cursor("state");
+    let itemsCursor = rootCursor.cursor("list");
 
-    render: function () {
-        let { rootCursor } = this.props;
+    return <div className="static-modal">
+        <Modal title="Temporary example success modal"
+            bsStyle="primary"
+            backdrop={true}
+            animation={true}
+            container={0}
+            onRequestHide={0}>
+            <div className="modal-body">
+                Congratulations! Everything has passed.
+                <code><pre>
+                    { JSON.stringify(itemsCursor.toJS(), null, 4) }
+                </pre></code>
+            </div>
+            <div className="modal-footer">
+                <Button>Close</Button>
+                <Button bsStyle="primary">Save changes</Button>
+            </div>
+        </Modal>
+    </div>;
+}).jsx;
 
-        //let stateCursor = cursor.cursor("state");
-        let itemsCursor = rootCursor.cursor("list");
 
-        return <div className="static-modal">
-            <Modal title="Temporary example success modal"
-                bsStyle="primary"
-                backdrop={true}
-                animation={true}
-                container={0}
-                onRequestHide={0}>
-                <div className="modal-body">
-                    Congratulations! Everything has passed.
-                    <code><pre>
-                        { JSON.stringify(itemsCursor.toJS(), null, 4) }
-                    </pre></code>
-                </div>
-                <div className="modal-footer">
-                    <Button>Close</Button>
-                    <Button bsStyle="primary">Save changes</Button>
-                </div>
-            </Modal>
-        </div>;
-    }
-
-});
+export default SaveModal;

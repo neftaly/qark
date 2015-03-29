@@ -1,13 +1,14 @@
 "use strict";
 
 import React from "react";
-import { shouldComponentUpdate } from "omniscient";
+import component from "omniscient";
 import R from "ramda";
-import leafPercentages from "../modules/leafPercentages";
 import {
     Button,
     ProgressBar
 } from "react-bootstrap";
+
+import leafPercentages from "../modules/leafPercentages";
 
 
 /**
@@ -22,31 +23,27 @@ import {
  * @param {string} props.style
  * @param {string} props.bsStyle
  */
-export default React.createClass({
-    mixins: [{ shouldComponentUpdate }],
+const StatusBar = component(({ listCursor, className, style, bsStyle }) => {
+    const percentages = leafPercentages(listCursor);
+    // Float bug fix (total percentage may add to more than 100%)
+    const truePercentageFixed = Math.floor(percentages.true);
 
-    render: function () {
-        let { listCursor, className, style, bsStyle } = this.props;
-        let percentages = leafPercentages(listCursor);
+    return <ProgressBar
+        className={className}
+        style={style}
+        bsStyle={bsStyle}>
 
-        // Float bug fix (total percentage may add to more than 100%)
-        let truePercentageFixed = Math.floor(percentages.true);
+        <ProgressBar
+            key={0}
+            now={truePercentageFixed}
+            bsStyle="success" />
+        <ProgressBar
+            key={1}
+            now={percentages.false}
+            bsStyle="danger" />
 
-        return <ProgressBar
-            className={className}
-            style={style}
-            bsStyle={bsStyle}>
+    </ProgressBar>;
+}).jsx;
 
-            <ProgressBar
-                key={0}
-                now={truePercentageFixed}
-                bsStyle="success" />
-            <ProgressBar
-                key={1}
-                now={percentages.false}
-                bsStyle="danger" />
 
-        </ProgressBar>;
-    }
-
-});
+export default StatusBar;

@@ -7,33 +7,26 @@ import {
 } from "react-bootstrap";
 
 
-export function glyphStatus (status) {
-    switch (status) {
-    case true:
-        return {
-            icon: "ok-circle",
-            text: "Passed",
-            style: "success"
-        };
-    case false:
-        return {
-            icon: "remove-circle",
-            text: "Failed",
-            style: "danger"
-        };
-    case "n/a":
-        return {
-            icon: "ban-circle",
-            text: "Not applicable",
-            style: "warning"
-        };
-    case null:
-    default:
-        return {
-            icon: "question-sign",
-            text: "Unknown",
-            style: "info"
-        };
+const glyphTypes = {
+    true: {
+        icon: "ok-circle",
+        text: "Passed",
+        bsStyle: "success"
+    },
+    false: {
+        icon: "remove-circle",
+        text: "Failed",
+        bsStyle: "danger"
+    },
+    null: {
+        icon: "question-sign",
+        text: "Unknown",
+        bsStyle: "info"
+    },
+    "n/a": {
+        icon: "ban-circle",
+        text: "Not applicable",
+        bsStyle: "warning"
     }
 }
 
@@ -49,10 +42,16 @@ export function glyphStatus (status) {
  * @param {Object.null} props.status - inteterminate status
  */
 const StatusIcon = ({ status }) => {
-    const glyph = glyphStatus(status);
+    const { icon, text, bsStyle } = glyphTypes[status];
 
-    return <Glyphicon glyph={glyph.icon} className={"text-"+glyph.style} alt={glyph.text} />;
+    return <Glyphicon
+        glyph={icon}
+        className={ "text-" + bsStyle }
+        alt={text} />;
 };
 
 
+export {
+    glyphTypes
+};
 export default component(StatusIcon).jsx;

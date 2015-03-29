@@ -4,8 +4,6 @@ import React from "react";
 import component from "omniscient";
 import R from "ramda";
 import marked from "marked";
-import StatusIcon from "./StatusIcon";
-import StatusToggle from "./StatusToggle";
 import {
     Panel,
     ListGroup,
@@ -13,9 +11,12 @@ import {
     ButtonGroup
 } from "react-bootstrap";
 
+import AttachmentButton from "./AttachmentButton";
+import StatusIcon from "./StatusIcon";
+import StatusToggle from "./StatusToggle";
 
 
-export function selectLeaf (stateCursor, id) {
+const selectLeaf = (stateCursor, id) => {
     return () => stateCursor.update("target", () => id);
 }
 
@@ -31,13 +32,15 @@ export function selectLeaf (stateCursor, id) {
  * @param {Immstruct.cursor} props.stateCursor
  * @param {string} props.id
  */
-const Leaf = ({ itemCursor, stateCursor, id }) => {
+const Leaf = component(({ itemCursor, stateCursor, id }) => {
 
-    const { name, status, description } = itemCursor.toJS();
+    const { name, status, description, files } = itemCursor.toJS();
     const activeLeaf = stateCursor.toJS().target === id;
 
     const className = "list-group flexRowContainer"
         + ((activeLeaf) ? " activeLeaf" : "");
+
+    const bsStyle = (activeLeaf) ? "info" : "default";
 
     return <div className="leaf">
         <div
@@ -46,11 +49,11 @@ const Leaf = ({ itemCursor, stateCursor, id }) => {
             style={{ cursor: "pointer", margin: 0 }}
             id={id}>
 
-                <ListGroupItem style={{ margin: 0 }} bsStyle={ activeLeaf ? "info" : "default" }>
+                <ListGroupItem style={{ margin: 0 }} bsStyle={bsStyle}>
                     <StatusIcon status={status} />
                 </ListGroupItem>
 
-                <ListGroupItem style={{ margin: 0 }} bsStyle={ activeLeaf ? "info" : "default" } className="flex">
+                <ListGroupItem style={{ margin: 0 }} bsStyle={bsStyle} className="flex">
                     {name}
                 </ListGroupItem>
 
@@ -64,7 +67,10 @@ const Leaf = ({ itemCursor, stateCursor, id }) => {
             <br />
 
             <div>Notes go here</div>
-            <div>File list goes here</div>
+            <div>
+                File list goes here { files }
+                <AttachmentButton itemCursor={itemCursor} />
+            </div>
 
             <div>Changelog goes here</div>
 
@@ -72,19 +78,10 @@ const Leaf = ({ itemCursor, stateCursor, id }) => {
 
     </div>;
 
+}).jsx;
+
+
+export {
+    selectLeaf
 };
-
-
-export default component(Leaf).jsx;
-
-
-
-/*
-<ButtonGroup className="pull-right">
-    <AttachmentButton itemCursor={itemCursor} />
-</ButtonGroup>
-
-<ButtonGroup className="pull-right">
-    <StatusToggle status={status} itemCursor={itemCursor} />
-</ButtonGroup>
-*/
+export default Leaf;

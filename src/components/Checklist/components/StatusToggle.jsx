@@ -1,76 +1,73 @@
 "use strict";
 
 import React from "react";
-import { shouldComponentUpdate } from "omniscient";
+import component from "omniscient";
 import R from "ramda";
 import {
     Button
 } from "react-bootstrap";
 
 
+const buttonTypes = {
+    true: {
+        bsStyle: "success",
+        text: "Pass"
+    },
+    false: {
+        bsStyle: "danger",
+        text: "Fail"
+    },
+    null: {
+        bsStyle: "info",
+        text: "Unset"
+    },
+    "n/a": {
+        bsStyle: "warning",
+        text: "N/A"
+    }
+};
+
+
+const updateStatus = (itemCursor, status) => {
+    return () => itemCursor.update("status", () => status);
+};
+
+
+const StatusButton = component(({ status, itemCursor, type }) => {
+    const buttonState = (status === type);
+    const { bsStyle, text } = buttonTypes[type];
+
+    return <Button
+        bsStyle={ (buttonState) ? bsStyle : "default" }
+        onClick={ updateStatus(itemCursor, type) }
+        active={buttonState}>
+        {text}
+    </Button>;
+}).jsx;
+
+
 /**
  * Checklist indeterminate/pass/fail toggle
  *
- * @extends React.ReactComponent
- * @class Table
  * @constructor
- * @namespace components
+ * @namespace components.CheckList.components
  * @param {Immstruct.cursor} props.itemCursor
  * @param {Boolean} props.status
  * @param {Object.null} props.status - inteterminate status
  */
-export default React.createClass({
-    mixins: [{ shouldComponentUpdate }],
-
-    updateStatus: function (status) {
-        let { itemCursor } = this.props;
-        return () => itemCursor.update("status", () => status);
-    },
-
-
-    statusButton: function (type) {
-        let { status } = this.props;
-
-        let buttonState = (status === type);
-
-        let bsStyle, text;
-
-        switch (type) {
-        case true:
-            bsStyle = "success";
-            text = "Pass";
-            break;
-        case false:
-            bsStyle = "danger";
-            text = "Fail";
-            break;
-        case "n/a":
-            bsStyle = "warning";
-            text = "N/A";
-            break;
-        case null:
-        default:
-            bsStyle = "info";
-            text = "Unset";
-            break;
-        }
-
-        return <Button
-            bsStyle={buttonState ? bsStyle : "default"}
-            onClick={this.updateStatus(type)}
-            active={buttonState}>
-            { text }
-        </Button>;
-    },
+const StatusToggle = component(({ status, itemCursor }) => {
+    return <div>
+        <StatusButton status={status} itemCursor={itemCursor} type={true} />
+        <StatusButton status={status} itemCursor={itemCursor} type={false} />
+        <StatusButton status={status} itemCursor={itemCursor} type={"n/a"} />
+        <StatusButton status={status} itemCursor={itemCursor} type={null} />
+    </div>;
+}).jsx;
 
 
-    render: function () {
-        return <div>
-            { this.statusButton(true) }
-            { this.statusButton(false) }
-            { this.statusButton("n/a") }
-            { this.statusButton(null) }
-        </div>;
-    }
-
-});
+export {
+    buttonTypes,
+    updateStatus,
+    StatusButton
+};
+export default StatusToggle;

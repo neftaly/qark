@@ -1,20 +1,21 @@
 "use strict";
 
 import React from "react";
-import { shouldComponentUpdate } from "omniscient";
-import Branch from "./components/Branch";
-import StatusBar from "./components/StatusBar";
-import LeafChooser from "./components/LeafChooser";
-import SaveModal from "./components/SaveModal";
+import component from "omniscient";
 import {
     Grid,
     Col,
     ButtonToolbar
 } from "react-bootstrap";
 
+import Branch from "./components/Branch";
+import StatusBar from "./components/StatusBar";
+import LeafChooser from "./components/LeafChooser";
+import SaveModal from "./components/SaveModal";
+
 
 /**
- * Quark base app
+ * Quark Checklist
  *
  * @extends React.ReactComponent
  * @class Table
@@ -22,39 +23,36 @@ import {
  * @namespace components
  * @param {Immstruct.cursor} props.rootCursor
  */
-export default React.createClass({
-    mixins: [{ shouldComponentUpdate }],
+const Checklist = component(({ rootCursor }) => {
+    const stateCursor = rootCursor.cursor("state");
+    const listCursor = rootCursor.cursor("list");
 
-    render: function () {
-        let { rootCursor } = this.props;
+    return <div
+        className="flexColumnContainer"
+        style={{ minHeight: "100vh" }}>
 
-        let stateCursor = rootCursor.cursor("state");
-        let listCursor = rootCursor.cursor("list");
+        <div
+            className="flex"
+            style={{ overflowX: "auto", overflowY: "scroll" }}
+            id="branchContainer">
+            <Branch itemCursor={listCursor} stateCursor={stateCursor} level={0} />
+        </div>
 
-        return <div
-            className="flexColumnContainer"
-            style={{ minHeight: "100vh" }}>
+        {/*
+        <div className="flexRowContainer">
+            <StatusBar
+                listCursor={listCursor}
+                bsSize="large"
+                className="flex pull-left" />
+            <ButtonToolbar className="pull-right">
+                <LeafChooser rootCursor={rootCursor} />
+            </ButtonToolbar>
+        </div>
+        */}
 
-            <div
-                className="flex"
-                style={{ overflowX: "auto", overflowY: "scroll" }}
-                id="branchContainer">
-                <Branch itemCursor={listCursor} stateCursor={stateCursor} level={1} />
-            </div>
+    </div>;
 
-            {/*
-            <div className="flexRowContainer">
-                <StatusBar
-                    listCursor={listCursor}
-                    bsSize="large"
-                    className="flex pull-left" />
-                <ButtonToolbar className="pull-right">
-                    <LeafChooser rootCursor={rootCursor} />
-                </ButtonToolbar>
-            </div>
-            */}
+}).jsx;
 
-        </div>;
-    }
 
-});
+export default Checklist;

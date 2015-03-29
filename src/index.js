@@ -3,6 +3,8 @@
 import Immstruct from "immstruct";
 import init from "./actions";
 
+//require("./modules/react-a11y/lib")();
+
 
 /**
  * Init

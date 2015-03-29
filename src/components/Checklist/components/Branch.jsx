@@ -1,13 +1,46 @@
 "use strict";
 
 import React from "react";
-import { shouldComponentUpdate } from "omniscient";
+import component from "omniscient";
 import marked from "marked";
-import Leaf from "./Leaf";
-import identifyCursor from "../modules/identifyCursor";
 import {
     Panel
 } from "react-bootstrap";
+
+import identifyCursor from "../modules/identifyCursor";
+import Leaf from "./Leaf";
+
+
+const subList = function(stateCursor, level) {
+    return (subItemCursor) => {
+    const id = identifyCursor(subItemCursor);
+
+    if (subItemCursor.cursor("list").deref()) {
+        return <Branch
+                itemCursor={subItemCursor}
+                stateCursor={stateCursor}
+                level={level + 1}
+                key={id}
+                id={id} />;
+    }
+
+    return <Leaf
+        itemCursor={subItemCursor}
+        stateCursor={stateCursor}
+        key={id}
+        id={id} />;
+    };
+
+};
+
+
+const BranchHeader = component(({ level, text }) => {
+    return React.createElement(
+        "h" + (level + 1),
+        null,
+        text
+    );
+}).jsx;
 
 
 /**
@@ -19,49 +52,24 @@ import {
  * @namespace components
  * @param {Immstruct.cursor} props.itemCursor
  * @param {Immstruct.cursor} props.stateCursor
+ * @param {Integer} props.level - Current list depth
  */
-let Branch = React.createClass({
-    mixins: [{ shouldComponentUpdate }],
+const Branch = component(({ itemCursor, stateCursor, level }) => {
+    const name = itemCursor.cursor("name").deref();
+    const description = itemCursor.cursor("description").deref();
 
-    subList: function(subItemCursor) {
-        let { stateCursor, level } = this.props;
+    const listCursors = itemCursor.cursor("list").toArray();
 
-        let id = identifyCursor(subItemCursor);
-
-        if (subItemCursor.cursor("list").deref()) {
-            return <div key={id} style={{ marginTop: "2em" }}>
-                <Branch
-                    itemCursor={subItemCursor}
-                    stateCursor={stateCursor}
-                    level={level + 1}
-                    id={id} />
-            </div>;
-        }
-
-        return <Leaf
-            itemCursor={subItemCursor}
-            stateCursor={stateCursor}
-            key={id} id={id} />;
-    },
+    return <div style={{ marginTop: (level > 1) ? "2em" : "0em" }}>
+        <BranchHeader level={level} text={name} />
+        <div dangerouslySetInnerHTML={{ __html: marked(description) }} />
+        <div>{ listCursors.map(subList(stateCursor, level)) }</div>
+    </div>;
+}).jsx;
 
 
-    render: function () {
-        const { itemCursor, level } = this.props;
-
-        const name = itemCursor.cursor("name").deref();
-        const description = itemCursor.cursor("description").deref();
-
-        const listCursors = itemCursor.cursor("list").toArray();
-
-        const heading = React.createElement("h" + level, null, name);
-
-        return <div>
-            { heading }
-            <div dangerouslySetInnerHTML={{ __html: marked(description) }} />
-            <div>{ listCursors.map(this.subList) }</div>
-        </div>;
-    }
-
-});
-
+export {
+    subList,
+    BranchHeader
+}
 export default Branch;
