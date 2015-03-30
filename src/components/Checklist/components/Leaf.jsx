@@ -16,8 +16,8 @@ import StatusIcon from "./StatusIcon";
 import StatusToggle from "./StatusToggle";
 
 
-const selectLeaf = (stateCursor, id) => {
-    return () => stateCursor.update("target", () => id);
+const selectLeaf = (stateCursor, uuid) => {
+    return () => stateCursor.update("target", () => uuid);
 }
 
 
@@ -30,36 +30,29 @@ const selectLeaf = (stateCursor, id) => {
  * @namespace components
  * @param {Immstruct.cursor} props.itemsCursor
  * @param {Immstruct.cursor} props.stateCursor
- * @param {string} props.id
+ * @param {string} props.uuid
  */
-const Leaf = component(({ itemCursor, stateCursor, id }) => {
-
-    const { name, status, description, files } = itemCursor.toJS();
-    const activeLeaf = stateCursor.toJS().target === id;
-
-    const className = "list-group flexRowContainer"
-        + ((activeLeaf) ? " activeLeaf" : "");
-
-    const bsStyle = (activeLeaf) ? "info" : "default";
+const Leaf = component(({ itemCursor, active }, { stateCursor }) => {
+    const { name, status, description, files, uuid } = itemCursor.toJS();
 
     return <div className="leaf">
         <div
-            className={className}
-            onClick={selectLeaf(stateCursor, id)}
+            className="list-group flexRowContainer"
+            onClick={selectLeaf(stateCursor, uuid)}
             style={{ cursor: "pointer", margin: 0 }}
-            id={id}>
+            id={uuid}>
 
-                <ListGroupItem style={{ margin: 0 }} bsStyle={bsStyle}>
+                <ListGroupItem style={{ margin: 0 }} active={active}>
                     <StatusIcon status={status} />
                 </ListGroupItem>
 
-                <ListGroupItem style={{ margin: 0 }} bsStyle={bsStyle} className="flex">
+                <ListGroupItem style={{ margin: 0 }} active={active} className="flex">
                     {name}
                 </ListGroupItem>
 
         </div>
 
-        <Panel style={{ display: activeLeaf ? "block" : "none" }}>
+        <Panel style={{ display: active ? "block" : "none" }}>
             <div dangerouslySetInnerHTML={{ __html: marked(description) }} />
 
             <StatusToggle status={status} itemCursor={itemCursor} />

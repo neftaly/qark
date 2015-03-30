@@ -13,6 +13,8 @@ import StatusBar from "./components/StatusBar";
 import LeafChooser from "./components/LeafChooser";
 import SaveModal from "./components/SaveModal";
 
+//component.debug();
+
 
 /**
  * Quark Checklist

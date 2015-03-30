@@ -15,7 +15,7 @@ let structure = new Immstruct({
         target: location.hash.replace("#", ""),
         edit: false
     },
-    list: require("./resources/example")
+    list: require("./resources/example0")
 });
 
 init(structure);

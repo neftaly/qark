@@ -7,28 +7,29 @@ import {
     Panel
 } from "react-bootstrap";
 
-import identifyCursor from "../modules/identifyCursor";
 import Leaf from "./Leaf";
 
 
 const subList = function(stateCursor, level) {
+    const target = stateCursor.cursor("target").deref();
+
     return (subItemCursor) => {
-    const id = identifyCursor(subItemCursor);
+        const uuid = subItemCursor.cursor("uuid").deref();
+        const active = (uuid === target);
 
-    if (subItemCursor.cursor("list").deref()) {
-        return <Branch
-                itemCursor={subItemCursor}
-                stateCursor={stateCursor}
-                level={level + 1}
-                key={id}
-                id={id} />;
-    }
+        if (subItemCursor.cursor("list").deref()) {
+            return <Branch
+                    itemCursor={subItemCursor}
+                    stateCursor={stateCursor}
+                    level={level + 1}
+                    key={uuid} />;
+        }
 
-    return <Leaf
-        itemCursor={subItemCursor}
-        stateCursor={stateCursor}
-        key={id}
-        id={id} />;
+        return <Leaf
+            itemCursor={subItemCursor}
+            active={active}
+            statics={{ stateCursor }}
+            key={uuid} />;
     };
 
 };

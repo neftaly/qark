@@ -2,7 +2,6 @@
 
 import R from "ramda";
 import leafTotals from "./leafTotals";
-import identifyCursor from "./identifyCursor";
 
 
 /**
@@ -10,7 +9,7 @@ import identifyCursor from "./identifyCursor";
  *
  * @param {Immstruct.cursor} initialLististCursor - Cursor to search through
  * @param {Object} partial - Partial (initial) return object
- * @returns {Array} List of leaf node objects (path, status)
+ * @returns {Array} List of leaf node objects (uuid, status)
  */
 export default function leafList (initialListCursor, partial = []) {
     let list = initialListCursor.cursor("list").toArray();
@@ -23,8 +22,8 @@ export default function leafList (initialListCursor, partial = []) {
         }
 
         let status = node.cursor("status").deref();
-        let path = identifyCursor(node);
-        partial.push({ path, status });
+        let uuid = node.cursor("uuid").deref();
+        partial.push({ uuid, status });
 
         return partial;
     }, partial);
