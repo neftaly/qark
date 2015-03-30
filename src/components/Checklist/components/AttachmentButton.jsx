@@ -3,29 +3,52 @@
 import React from "react";
 import component from "omniscient";
 import R from "ramda";
+import uuidGenerator from "uuid";
 import {
     Button,
     Glyphicon
 } from "react-bootstrap";
 
 
-const addFiles = (itemCursor) => {
-    return (e) => {
-        const oldList = itemCursor.cursor("files").deref();
-        const newList = R.map((file) => {
-            return " [" + file.name + "] ";
-        }, e.target.files).join("");
+const addFiles = R.curry((itemCursor, event) => {
+    R.forEach((fileObject) => {
+        const filesCursor = itemCursor.cursor("files");
 
-        itemCursor.set("files", oldList + newList);
-    };
-};
+        // Set up the file object
+        const file = {
+            uuid: uuidGenerator.v4(),
+            name: fileObject.name,
+            size: fileObject.size,
+            contents: null // Placeholder
+        };
+
+        // Add file to filesCursor
+        filesCursor.merge({ [file.uuid]: file });
+
+        setTimeout(() => { // Testing only
+            // Setup async file read
+            const reader = new FileReader();
+
+            // When read is complete, update placeholder
+            reader.onload = () => {
+                const contents = reader.result;
+                const fileCursor = filesCursor.cursor(file.uuid);
+                fileCursor.update("contents", () => contents);
+            }
+
+            // Start reading
+            reader.readAsDataURL(fileObject);
+        }, 1000);
+
+    }, event.target.files);
+});
 
 
-const triggerFirstChild = (e) => {
+const triggerFirstChild = (event) => {
     const {
         firstChild,
         parentNode
-    } = e.target;
+    } = event.target;
 
     if (firstChild) {
         return firstChild.click();
@@ -39,32 +62,22 @@ const triggerFirstChild = (e) => {
 /**
  * File attachment button
  *
- * We intentionally have a tiny bit of private state:
- * files that have been attached, but are still processing.
- * They're not pushed into public until they're finished.
- *
- * Consider refactoring this with "futures" or something?
- *
  * @extends React.ReactComponent
  * @class Table
  * @constructor
  * @namespace components
  * @param {Immstruct} props.cursor
  */
-const AttachmentButton = React.createClass({
-    render: function() {
-        const { itemCursor } = this.props;
-
-        return <Button onClick={triggerFirstChild}>
-            <input style={{ display: "none" }}
-                onChange={addFiles(itemCursor)}
-                accept="image/*,application/*,text/*"
-                multiple="true"
-                type="file" />
-            <Glyphicon glyph="paperclip" />
-        </Button>;
-    }
-});
+const AttachmentButton = component(({ itemCursor }) => {
+    return <Button onClick={triggerFirstChild}>
+        <input style={{ display: "none" }}
+            onChange={addFiles(itemCursor)}
+            accept="image/*,application/*,text/*"
+            multiple="true"
+            type="file" />
+        <Glyphicon glyph="paperclip" />
+    </Button>;
+}).jsx;
 
 
 export {

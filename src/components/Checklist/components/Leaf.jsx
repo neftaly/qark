@@ -11,7 +11,7 @@ import {
     ButtonGroup
 } from "react-bootstrap";
 
-import AttachmentButton from "./AttachmentButton";
+import FileList from "./FileList";
 import StatusIcon from "./StatusIcon";
 import StatusToggle from "./StatusToggle";
 
@@ -33,7 +33,7 @@ const selectLeaf = (stateCursor, uuid) => {
  * @param {string} props.uuid
  */
 const Leaf = component(({ itemCursor, active }, { stateCursor }) => {
-    const { name, status, description, files, uuid } = itemCursor.toJS();
+    const { name, status, description, uuid } = itemCursor.toJS();
 
     return <div className="leaf">
         <div
@@ -60,10 +60,7 @@ const Leaf = component(({ itemCursor, active }, { stateCursor }) => {
             <br />
 
             <div>Notes go here</div>
-            <div>
-                File list goes here { files }
-                <AttachmentButton itemCursor={itemCursor} />
-            </div>
+            <FileList itemCursor={ itemCursor } />
 
             <div>Changelog goes here</div>
 

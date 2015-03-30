@@ -8,7 +8,8 @@
     "omniscient": "^3.1.0",
     "ramda": "^0.13.0",
     "react": "^0.13.0",
-    "react-bootstrap": "^0.17.0"
+    "react-bootstrap": "^0.17.0",
+    "uuid": "^2.0.1"
   },
   "devDependencies": {
     "babel-core": "^4.7.4",

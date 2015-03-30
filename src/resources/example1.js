@@ -15,14 +15,14 @@ module.exports = {
                     "uuid": "3_e62dc5ba",
                     "status": null,
                     "description": "",
-                    "files": []
+                    "files": {}
                 },
                 {
                     "name": "4",
                     "uuid": "4_e62dcc36",
                     "status": null,
                     "description": "",
-                    "files": []
+                    "files": {}
                 }
             ]
         }

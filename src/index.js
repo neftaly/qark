@@ -10,7 +10,7 @@ import init from "./actions";
  * Init
  */
 
-let structure = new Immstruct({
+let structure = new Immstruct("globalState", {
     state: {
         target: location.hash.replace("#", ""),
         edit: false
