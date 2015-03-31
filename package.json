@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "immstruct": "^1.4.0",
+    "marked": "^0.3.3",
     "moment": "^2.9.0",
     "omniscient": "^3.1.0",
     "ramda": "^0.13.0",
