@@ -11,9 +11,11 @@ import {
     ButtonGroup
 } from "react-bootstrap";
 
-import FileList from "./FileList";
 import StatusIcon from "./StatusIcon";
 import StatusToggle from "./StatusToggle";
+import CommentList from "./CommentList";
+import FileList from "./FileList";
+import FileAttachButton from "./FileAttachButton";
 
 
 const selectLeaf = (stateCursor, uuid) => {
@@ -56,13 +58,15 @@ const Leaf = component(({ itemCursor, active }, { stateCursor }) => {
             <div dangerouslySetInnerHTML={{ __html: marked(description) }} />
 
             <StatusToggle status={status} itemCursor={itemCursor} />
+            <FileAttachButton itemCursor={itemCursor} />
+
+            <br /><br />
+
+            <FileList itemCursor={ itemCursor } />
 
             <br />
 
-            <div>Notes go here</div>
-            <FileList itemCursor={ itemCursor } />
-
-            <div>Changelog goes here</div>
+            <CommentList itemCursor={ itemCursor } />
 
         </Panel>
 

@@ -15,14 +15,29 @@ module.exports = {
                     "uuid": "3_e62dc5ba",
                     "status": null,
                     "description": "",
-                    "files": {}
+                    "files": {},
+                    "comments": {
+                        "3h4k1j2h34": {
+                            "name": "Larry",
+                            "date": "2015-03-30T21:44:21.196+0000",
+                            "uuid": "3h4k1j2h34",
+                            "comment": "Hi Barry"
+                        },
+                        "jkhkjh4323k": {
+                            "name": "Barry",
+                            "date": "2015-03-30T22:32:18.196+0000",
+                            "uuid": "jkhkjh4323k",
+                            "comment": "Hey Larry"
+                        }
+                    }
                 },
                 {
                     "name": "4",
                     "uuid": "4_e62dcc36",
                     "status": null,
                     "description": "",
-                    "files": {}
+                    "files": {},
+                    "comments": {}
                 }
             ]
         }

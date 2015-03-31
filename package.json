@@ -4,11 +4,12 @@
   },
   "dependencies": {
     "immstruct": "^1.4.0",
-    "marked": "^0.3.3",
+    "moment": "^2.9.0",
     "omniscient": "^3.1.0",
     "ramda": "^0.13.0",
     "react": "^0.13.0",
     "react-bootstrap": "^0.17.0",
+    "remarkable": "^1.6.0",
     "uuid": "^2.0.1"
   },
   "devDependencies": {

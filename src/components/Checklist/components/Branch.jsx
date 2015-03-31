@@ -2,11 +2,11 @@
 
 import React from "react";
 import component from "omniscient";
-import marked from "marked";
 import {
     Panel
 } from "react-bootstrap";
 
+import Markdown from "./Markdown";
 import Leaf from "./Leaf";
 
 
@@ -63,7 +63,7 @@ const Branch = component(({ itemCursor, stateCursor, level }) => {
 
     return <div style={{ marginTop: (level > 1) ? "2em" : "0em" }}>
         <BranchHeader level={level} text={name} />
-        <div dangerouslySetInnerHTML={{ __html: marked(description) }} />
+        <Markdown>{description}</Markdown>
         <div>{ listCursors.map(subList(stateCursor, level)) }</div>
     </div>;
 }).jsx;

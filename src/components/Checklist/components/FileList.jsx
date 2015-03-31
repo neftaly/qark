@@ -6,47 +6,81 @@ import R from "ramda";
 import uuidGenerator from "uuid";
 import {
     Button,
-    Glyphicon
+    Glyphicon,
+    Panel
 } from "react-bootstrap";
 
-import AttachmentButton from "./AttachmentButton";
+
+const deleteFile = R.curry((filesCursor, uuid, event) => {
+    if (filesCursor.cursor(uuid).cursor("contents").deref() === null) {
+        // Update still pending, don't delete yet.
+        // This check can be removed when FileAttachButton uses references.
+        console.log("FileList: Deletion failed - file still loading");
+        return;
+    }
+
+    filesCursor.delete(uuid);
+});
 
 
-const fileIcon = (fileCursor) => {
+const FileIcon = component(({ file }, { filesCursor }) => {
 
     // TODO: Proper spinner
     const spinner = "https://stylishthemes.github.io/GitHub-Dark/"
         + "images/octocat-spinner-smil.min.svg";
 
-    const file = fileCursor.toJS();
-    return <div style={{ display: "inline-block" }}>
+    return <div
+        className="fileThumbnail"
+        key={file.uuid}>
 
-        <div
-            style={{ width: "96px", height: "96px", border: "1px solid black" }}
-            key={file.uuid}>
-            <img
-                style={{ maxWidth: "96px", maxHeight: "96px" }}
-                src={ file.contents || spinner } />
-        </div>
+        <img
+            style={{ height: "96px" }}
+            alt={file.name}
+            title={file.name}
+            src={ file.contents || spinner } />
 
-        {file.name}
+        <Glyphicon
+            glyph="remove-sign"
+            onClick={deleteFile(filesCursor, file.uuid)}
+            className="fileButton"
+            style={{
+                top: "8px",
+                right: "8px",
+                fontSize: "1em"
+            }} />
+
+        <Glyphicon
+            glyph="pencil"
+            className="fileButton"
+            style={{
+                left: "8px",
+                top: "calc(96px - 8px - 1em)",
+                fontSize: "2em"
+            }} />
 
     </div>;
-}
+}).jsx;
 
 
 const FileList = component(({ itemCursor }) => {
-    const filesCursors = itemCursor.cursor("files").toArray();
+    const filesCursor = itemCursor.cursor("files");
 
-    return <div style={{ border: "2px solid silver" }}>
-        <AttachmentButton itemCursor={itemCursor} />
-        { filesCursors.map(fileIcon) }
-    </div>
+    return <Panel header="Attachments">
+        {
+            filesCursor.toArray().map((fileCursor) => {
+                const file = fileCursor.toJS();
+                return <FileIcon
+                    statics={{ filesCursor }}
+                    file={file}
+                    key={file.uuid} />;
+            })
+        }
+    </Panel>;
 }).jsx;
 
 
 export {
-    fileIcon,
-    AttachmentButton
+    deleteFile,
+    FileIcon
 };
 export default FileList;

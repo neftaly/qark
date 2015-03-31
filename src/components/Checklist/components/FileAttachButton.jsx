@@ -10,30 +10,33 @@ import {
 } from "react-bootstrap";
 
 
+// This is crappy atm, but still works. 
+// TODO: Fix issues below (see bug tracker - issue #2).
 const addFiles = R.curry((itemCursor, event) => {
-    R.forEach((fileObject) => {
-        const filesCursor = itemCursor.cursor("files");
+    // Mutable! See the filesCursor.merge todo
+    let filesCursor = itemCursor.cursor("files");
 
+    R.forEach((fileObject) => {
         // Set up the file object
         const file = {
             uuid: uuidGenerator.v4(),
             name: fileObject.name,
             size: fileObject.size,
-            contents: null // Placeholder
+            contents: null // Data placeholder
         };
 
-        // Add file to filesCursor
-        filesCursor.merge({ [file.uuid]: file });
+        // Update the cursor (with mutation :B)
+        // TODO: use an immstruct reference, passed down from the top
+        filesCursor = filesCursor.merge({ [file.uuid]: file });
 
         setTimeout(() => { // Testing only
+
             // Setup async file read
             const reader = new FileReader();
 
             // When read is complete, update placeholder
             reader.onload = () => {
-                const contents = reader.result;
-                const fileCursor = filesCursor.cursor(file.uuid);
-                fileCursor.update("contents", () => contents);
+                filesCursor.cursor(file.uuid).update("contents", () => reader.result);
             }
 
             // Start reading
@@ -41,6 +44,9 @@ const addFiles = R.curry((itemCursor, event) => {
         }, 1000);
 
     }, event.target.files);
+
+    // Reset the file input, so we can trigger onchange again
+    event.target.value = "";
 });
 
 

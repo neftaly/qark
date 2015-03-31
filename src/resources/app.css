@@ -68,3 +68,33 @@ button:focus {
 .leaf:first-child {
     border-top-width: 1px;
 }
+
+
+.fileThumbnail {
+    width: 96px;
+    height: 96px;
+    border: 1px solid black;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+    margin-right: 4px;
+}
+
+.fileThumbnail .fileButton {
+    position: absolute;
+    color: white;
+    height: 1em;
+    cursor: pointer;
+    text-shadow: 0px 0px 3px #000;
+    opacity: 0.25;
+    transition: all 0.5s;
+}
+
+.fileThumbnail:hover .fileButton {
+    opacity: 0.75;
+}
+
+.fileThumbnail .fileButton:hover {
+    opacity: 1;
+}
