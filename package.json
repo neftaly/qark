@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "./node_modules/.bin/gulp build",
+    "deploy": "npm run build && cd dist && netlify deploy"
   },
   "dependencies": {
     "immstruct": "^1.4.0",
@@ -16,9 +18,21 @@
     "babel-core": "^4.7.4",
     "babel-eslint": "^2.0.2",
     "babel-loader": "^4.1.0",
+    "babelify": "^5.0.4",
+    "brfs": "^1.4.0",
+    "browserify": "^9.0.3",
+    "bundle-collapser": "^1.1.4",
     "gulp": "^3.8.11",
+    "gulp-cli": "^0.2.0",
+    "gulp-concat": "^2.5.2",
     "gulp-eslint": "^0.7.0",
+    "gulp-minify-css": "^1.0.0",
+    "gulp-sourcemaps": "^1.5.1",
+    "gulp-uglify": "^1.1.0",
+    "gulp-util": "^3.0.4",
     "react-hot-loader": "^1.2.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
     "webpack": "^1.7.2",
     "webpack-dev-server": "^1.7.0"
   }
