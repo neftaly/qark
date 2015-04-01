@@ -10,6 +10,7 @@ import {
     ButtonGroup
 } from "react-bootstrap";
 
+import Markdown from "./Markdown";
 import StatusIcon from "./StatusIcon";
 import StatusToggle from "./StatusToggle";
 import CommentList from "./CommentList";
@@ -54,7 +55,7 @@ const Leaf = component(({ itemCursor, active }, { stateCursor }) => {
         </div>
 
         <Panel style={{ display: active ? "block" : "none" }}>
-            <div dangerouslySetInnerHTML={{ __html: marked(description) }} />
+            <Markdown>{description}</Markdown>
 
             <StatusToggle status={status} itemCursor={itemCursor} />
             <FileAttachButton itemCursor={itemCursor} />
