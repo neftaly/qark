@@ -16,7 +16,7 @@ const deleteFile = (filesCursor, uuid) => {
         if (filesCursor.cursor(uuid).cursor("contents").deref() === null) {
             // Update still pending, don't delete yet.
             // This check can be removed when FileAttachButton uses references.
-            console.log("FileList: Deletion failed - file still loading");
+            console.log("FileList: Cannot delete file - still loading", event);
             return;
         }
 

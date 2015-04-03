@@ -5,7 +5,7 @@ var gulp = require("gulp"),
     gutil = require("gulp-util"),
     eslint = require("gulp-eslint"),
 
-    sourcemaps = require("gulp-sourcemaps"),
+    //sourcemaps = require("gulp-sourcemaps"),
     concat = require("gulp-concat"),
     minifyCss = require("gulp-minify-css"),
     browserify = require("browserify"),
@@ -60,13 +60,13 @@ gulp.task("html", function () {
 gulp.task("scss", function () {
     //return gulp.src("./src/**/*.scss")
     return gulp.src("./src/**/*.css")
-        .pipe(sourcemaps.init())
+        //.pipe(sourcemaps.init())
         //.pipe(sass())
         .pipe(minifyCss({
             keepSpecialComments: 0
         }))
         .pipe(concat("app.min.css"))
-        .pipe(sourcemaps.write("."))
+        //.pipe(sourcemaps.write("."))
         .pipe(gulp.dest("./dist"));
 });
 
@@ -82,9 +82,9 @@ function bundleJs () {
         .on("error", gutil.log.bind(gutil, "Browserify Error"))
         .pipe(source("app.min.js"))
         .pipe(buffer())
-        .pipe(sourcemaps.init({ loadMaps: true }))
+        //.pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(uglify())
-        .pipe(sourcemaps.write("./"))
+        //.pipe(sourcemaps.write("./"))
         .pipe(gulp.dest("./dist"));
 }
 

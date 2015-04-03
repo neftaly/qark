@@ -47,8 +47,6 @@ const postNewComment = R.curry((itemCursor, event) => {
         comment: event.target.value
     };
 
-    console.log(comment.uuid)
-
     itemCursor.cursor("comments").merge({ [comment.uuid]: comment });
 });
 
@@ -80,6 +78,7 @@ const CommentList = component(({ itemCursor }) => {
 
 export {
     Comment,
-    CommentBox
+    CommentBox,
+    postNewComment
 };
 export default CommentList;

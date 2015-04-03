@@ -18,7 +18,7 @@ const Markdown = component(({ children }) => {
     return <span
         dangerouslySetInnerHTML={{
             __html: md.render(children)
-        }} />
+        }} />;
 }).jsx;
 
 

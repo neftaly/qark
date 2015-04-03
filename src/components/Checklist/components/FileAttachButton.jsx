@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 
 
-const FilesArray = R.map((fileObject) => {
+const genFilesArray = R.map((fileObject) => {
     const uuid = uuidGenerator.v4(); // Impure
     return {
         uuid,
@@ -19,7 +19,7 @@ const FilesArray = R.map((fileObject) => {
 });
 
 
-const FilesObject = R.reduce((partial, file) => {
+const genFilesObject = R.reduce((partial, file) => {
     const { uuid, fileObject } = file;
     const { name, size } = fileObject;
     return R.merge(partial, {
@@ -36,10 +36,10 @@ const FilesObject = R.reduce((partial, file) => {
 const addFiles = (itemCursor) => {
     return (event) => {
         // Generate a UUID for every file
-        const filesArray = FilesArray(event.target.files);
+        const filesArray = genFilesArray(event.target.files);
 
         // Turn file array into a map
-        const filesObject = FilesObject(filesArray);
+        const filesObject = genFilesObject(filesArray);
 
         // Attach placeholders to files cursor
         const filesCursor = itemCursor.cursor("files").merge(filesObject);
@@ -97,6 +97,8 @@ const AttachmentButton = component(({ itemCursor }) => {
 
 
 export {
+    genFilesArray,
+    genFilesObject,
     addFiles,
     triggerFirstChild
 };

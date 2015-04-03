@@ -28,7 +28,7 @@ const glyphTypes = {
         text: "Not applicable",
         bsStyle: "warning"
     }
-}
+};
 
 
 /**
@@ -41,17 +41,17 @@ const glyphTypes = {
  * @param {Boolean} props.status
  * @param {Object.null} props.status - inteterminate status
  */
-const StatusIcon = ({ status }) => {
+const StatusIcon = component(({ status }) => {
     const { icon, text, bsStyle } = glyphTypes[status];
 
     return <Glyphicon
         glyph={icon}
         className={ "text-" + bsStyle }
         alt={text} />;
-};
+}).jsx;
 
 
 export {
     glyphTypes
 };
-export default component(StatusIcon).jsx;
+export default StatusIcon;

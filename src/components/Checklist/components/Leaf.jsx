@@ -20,7 +20,7 @@ import FileAttachButton from "./FileAttachButton";
 
 const selectLeaf = (stateCursor, uuid) => {
     return () => stateCursor.update("target", () => uuid);
-}
+};
 
 
 /**
