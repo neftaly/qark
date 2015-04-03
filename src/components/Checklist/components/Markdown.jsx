@@ -1,7 +1,7 @@
 "use strict";
 
 import React from "react";
-import component from "omniscient";
+//import { shouldComponentUpdate } from "omniscient";
 import Remarkable from "remarkable";
 
 
@@ -14,12 +14,18 @@ const md = new Remarkable({
 });
 
 
-const Markdown = component(({ children }) => {
-    return <span
-        dangerouslySetInnerHTML={{
-            __html: md.render(children)
-        }} />;
-}).jsx;
+const Markdown = React.createClass({
+    //mixins: [shouldComponentUpdate],
+
+    render: function() {
+        const { children } = this.props;
+        return <span
+            dangerouslySetInnerHTML={{
+                __html: md.render(children)
+            }} />;
+    }
+
+});
 
 
 export default Markdown;
