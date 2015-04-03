@@ -5,6 +5,7 @@ import component from "omniscient";
 import {
     Grid,
     Col,
+    Button,
     ButtonToolbar
 } from "react-bootstrap";
 
@@ -29,6 +30,11 @@ const Checklist = component(({ rootCursor }) => {
     const stateCursor = rootCursor.cursor("state");
     const listCursor = rootCursor.cursor("list");
 
+    const tempToggleEditMode = () => {
+        const edit = stateCursor.cursor("edit").deref();
+        stateCursor.update("edit", () => !edit);
+    };
+
     return <div
         className="flexColumnContainer"
         style={{ minHeight: "100vh" }}>
@@ -40,8 +46,12 @@ const Checklist = component(({ rootCursor }) => {
             <Branch itemCursor={listCursor} stateCursor={stateCursor} level={0} />
         </div>
 
-        {/*
         <div className="flexRowContainer">
+            <Button
+                onClick={tempToggleEditMode}
+                className="pull-left">
+                Toggle edit mode
+            </Button>
             <StatusBar
                 listCursor={listCursor}
                 bsSize="large"
@@ -50,7 +60,6 @@ const Checklist = component(({ rootCursor }) => {
                 <LeafChooser rootCursor={rootCursor} />
             </ButtonToolbar>
         </div>
-        */}
 
     </div>;
 

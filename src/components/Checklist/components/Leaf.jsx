@@ -10,6 +10,7 @@ import {
     ButtonGroup
 } from "react-bootstrap";
 
+import Editor from "./Editor";
 import Markdown from "./Markdown";
 import StatusIcon from "./StatusIcon";
 import StatusToggle from "./StatusToggle";
@@ -34,8 +35,15 @@ const selectLeaf = (stateCursor, uuid) => {
  * @param {Immstruct.cursor} props.stateCursor
  * @param {string} props.uuid
  */
-const Leaf = component(({ itemCursor, active }, { stateCursor }) => {
+const Leaf = component(({ itemCursor, active, editMode }, { stateCursor }) => {
     const { name, status, description, uuid } = itemCursor.toJS();
+
+    if (editMode) {
+        return <Editor itemCursor={itemCursor} style={{ marginLeft: "2em" }}>
+            <strong>{name}</strong><br />
+            <Markdown>{description}</Markdown>
+        </Editor>;
+    }
 
     return <div className="leaf">
         <div

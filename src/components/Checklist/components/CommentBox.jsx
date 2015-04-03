@@ -48,7 +48,7 @@ const CommentBox = React.createClass({
 
         commentsCursor.merge(comment);
 
-        this.update(text, ""); // Reset comment box
+        this.update("text", ""); // Reset comment box
     },
 
 

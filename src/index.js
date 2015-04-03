@@ -13,7 +13,7 @@ import init from "./actions";
 let structure = new Immstruct("globalState", {
     state: {
         target: location.hash.replace("#", ""),
-        edit: false
+        edit: false // Maybe make this a uuid (for single editor)
     },
     list: require("./resources/example0")
 });
