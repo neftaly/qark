@@ -11,16 +11,18 @@ import {
 } from "react-bootstrap";
 
 
-const deleteFile = R.curry((filesCursor, uuid, event) => {
-    if (filesCursor.cursor(uuid).cursor("contents").deref() === null) {
-        // Update still pending, don't delete yet.
-        // This check can be removed when FileAttachButton uses references.
-        console.log("FileList: Deletion failed - file still loading");
-        return;
-    }
+const deleteFile = (filesCursor, uuid) => {
+    return (event) => {
+        if (filesCursor.cursor(uuid).cursor("contents").deref() === null) {
+            // Update still pending, don't delete yet.
+            // This check can be removed when FileAttachButton uses references.
+            console.log("FileList: Deletion failed - file still loading");
+            return;
+        }
 
-    filesCursor.delete(uuid);
-});
+        filesCursor.delete(uuid);
+    };
+};
 
 
 const FileIcon = component(({ file }, { filesCursor }) => {
