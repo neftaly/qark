@@ -13,7 +13,7 @@ import Leaf from "./Leaf";
 const subList = (stateCursor, level) => {
     const target = stateCursor.cursor("target").deref();
 
-    return (subItemCursor) => {
+    return (subItemCursor, index) => {
         const uuid = subItemCursor.cursor("uuid").deref();
         const active = (uuid === target);
 
@@ -22,14 +22,14 @@ const subList = (stateCursor, level) => {
                     itemCursor={subItemCursor}
                     stateCursor={stateCursor}
                     level={level + 1}
-                    key={uuid} />;
+                    key={index} />;
         }
 
         return <Leaf
             itemCursor={subItemCursor}
             active={active}
             statics={{ stateCursor }}
-            key={uuid} />;
+            key={index} />;
     };
 
 };

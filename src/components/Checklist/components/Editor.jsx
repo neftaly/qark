@@ -26,7 +26,7 @@ const updateNode = (itemCursor, name, newValue) => {
 
 
 const addNode = (list, type) => {
-    return (event) => {
+    return () => {
         const base = {
             "name": "Untitled Node",
             "uuid": uuidGenerator.v4(),
@@ -41,7 +41,7 @@ const addNode = (list, type) => {
             "status": null,
             "comments": new Immutable.Map({}),
             "files": new Immutable.Map({})
-        }
+        };
 
         const node = R.merge(
             base,
@@ -54,15 +54,13 @@ const addNode = (list, type) => {
 
 
 const deleteNode = (parentList, index) => {
-    return (event) => {
-        parentList.delete(index);
-    };
+    return () => parentList.delete(index);
 };
 
 
 const Editor = component((
     { itemCursor, index },
-    { structure, parentCursor, parentList }
+    { structure, parentList }
 ) => {
 
     const { name, description, list, uuid } = itemCursor.toObject();
@@ -121,8 +119,6 @@ const Editor = component((
         }}>
             {
                 listCursors.map((subItemCursor, index) => {
-                    const uuid = subItemCursor.get("uuid");
-
                     return <Editor
                         itemCursor={subItemCursor}
                         index={index}
@@ -130,7 +126,7 @@ const Editor = component((
                             structure,
                             parentList: list
                         }}
-                        key={uuid} />;
+                        key={index} />;
                 })
             }
         </div>

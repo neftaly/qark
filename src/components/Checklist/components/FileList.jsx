@@ -12,11 +12,10 @@ import {
 
 
 const deleteFile = (filesCursor, uuid) => {
-    return (event) => {
+    return () => {
         if (filesCursor.cursor(uuid).cursor("contents").deref() === null) {
             // Update still pending, don't delete yet.
             // This check can be removed when FileAttachButton uses references.
-            console.log("FileList: Cannot delete file - still loading", event);
             return;
         }
 

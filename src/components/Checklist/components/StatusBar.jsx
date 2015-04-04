@@ -26,7 +26,7 @@ import leafPercentages from "../modules/leafPercentages";
 const StatusBar = component(({ listCursor, className, style, bsStyle }) => {
     const percentages = leafPercentages(listCursor);
     // Float bug fix (total percentage may add to more than 100%)
-    const truePercentageFixed = Math.floor(percentages["true"]);
+    const truePercentageFixed = Math.floor(percentages.true);
 
     return <ProgressBar
         className={className}
@@ -43,7 +43,7 @@ const StatusBar = component(({ listCursor, className, style, bsStyle }) => {
             bsStyle="warning" />
         <ProgressBar
             key={2}
-            now={percentages["false"]}
+            now={percentages.false}
             bsStyle="danger" />
 
     </ProgressBar>;

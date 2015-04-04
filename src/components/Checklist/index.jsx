@@ -20,7 +20,7 @@ import SaveModal from "./components/SaveModal";
 
 
 const history = (structure, distance) => {
-    return (event) => {
+    return () => {
         const direction = (distance < 0) ? "undo" : "redo";
         const steps = Math.abs(distance);
 
@@ -91,7 +91,7 @@ const Checklist = component(({ rootCursor }, { structure }) => {
             </div>
 
         </div>;
-    };
+    }
 
     return <div className="flexColumnContainer" style={{
         backgroundColor: "white",
