@@ -56,10 +56,10 @@ const chooseLeaf = (rootCursor, direction) => {
  */
 const LeafChooser = component(({ rootCursor }) => {
     return <ButtonGroup>
-        <Button bsSize="small" onClick={ chooseLeaf(rootCursor, -1) }>
+        <Button onClick={ chooseLeaf(rootCursor, -1) }>
             <Glyphicon glyph="chevron-left" />
         </Button>
-        <Button bsSize="small" onClick={ chooseLeaf(rootCursor, +1) }>
+        <Button onClick={ chooseLeaf(rootCursor, +1) }>
             <Glyphicon glyph="chevron-right" />
         </Button>
     </ButtonGroup>;

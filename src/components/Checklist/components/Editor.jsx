@@ -1,7 +1,10 @@
 "use strict";
 
 import React from "react";
+import R from "ramda";
 import component from "omniscient";
+import uuidGenerator from "uuid";
+import Immutable from "immutable";
 import {
     Button,
     Panel,
@@ -9,8 +12,10 @@ import {
     Well
 } from "react-bootstrap";
 
+import Markdown from "./Markdown";
 
-const updateCursor = (itemCursor, name, newValue) => {
+
+const updateNode = (itemCursor, name, newValue) => {
     return (event) => {
         const value = (newValue !== undefined) ?
             newValue : event.target.value;
@@ -20,46 +25,123 @@ const updateCursor = (itemCursor, name, newValue) => {
 };
 
 
-const Editor = component(({
-    active,
-    isBranch,
-    itemCursor,
-    style,
-    children
-}) => {
+const addNode = (list, type) => {
+    return (event) => {
+        const base = {
+            "name": "Untitled Node",
+            "uuid": uuidGenerator.v4(),
+            "description": ""
+        };
 
-    if (isBranch && !active) {
-        return <div>{children}</div>;
-    }
+        const branch = {
+            "list": new Immutable.List([])
+        };
 
-    const { name, description } = itemCursor.toJS();
+        const leaf = {
+            "status": null,
+            "comments": new Immutable.Map({}),
+            "files": new Immutable.Map({})
+        }
 
-    return <form className="clearfix form-horizontal" style={style}>
-        <Panel header={ (isBranch ? "Branch" : "Leaf" ) + " node" }>
+        const node = R.merge(
+            base,
+            (type === "branch") ? branch : leaf
+        );
 
-            <Input
-                labelClassName='col-xs-2'
-                wrapperClassName='col-xs-10'
-                label="Title"
-                type="text"
-                value={name}
-                onChange={ updateCursor(itemCursor, "name") } />
+        list.push(new Immutable.Map(node));
+    };
+};
 
-            <Input
-                labelClassName='col-xs-2'
-                wrapperClassName='col-xs-10'
-                label="Description"
-                type="textarea"
-                value={description}
-                onChange={ updateCursor(itemCursor, "description") } />
 
-            [add child branch]
-            [add child leaf]
-            [delete this branch]
-        </Panel>
-        <Well>{children}</Well>
-    </form>;
+const deleteNode = (parentList, index) => {
+    return (event) => {
+        parentList.delete(index);
+    };
+};
+
+
+const Editor = component((
+    { itemCursor, index },
+    { structure, parentCursor, parentList }
+) => {
+
+    const { name, description, list, uuid } = itemCursor.toObject();
+    const isBranch = !!list;
+    const listCursors = isBranch ? list.toArray() : [];
+
+    return <div id={uuid}>
+        <form className="clearfix form-horizontal">
+            <Panel header={ (isBranch ? "Branch" : "Leaf" ) + " node" }>
+
+                <Input
+                    labelClassName='col-xs-2'
+                    wrapperClassName='col-xs-10'
+                    label="Title"
+                    type="text"
+                    value={name}
+                    onChange={ updateNode(itemCursor, "name") } />
+
+                <Input
+                    labelClassName='col-xs-2'
+                    wrapperClassName='col-xs-10'
+                    label="Description"
+                    type="textarea"
+                    value={description}
+                    onChange={ updateNode(itemCursor, "description") } />
+
+                <Button disabled={!isBranch}
+                    onClick={ addNode(list, "branch") }>
+                    Add child branch
+                </Button>
+
+                <Button disabled={!isBranch}
+                    onClick={ addNode(list, "leaf") }>
+                    Add child leaf
+                </Button>
+
+                <Button disabled={!parentList}
+                    onClick={ deleteNode(parentList, index) }>
+                    Delete this node
+                </Button>
+
+            </Panel>
+            <Well>
+                <h3>{name}</h3>
+                <Markdown>{description}</Markdown>
+            </Well>
+        </form>
+
+        <div style={{
+            marginLeft: "1em",
+            marginBottom: "1em",
+            paddingLeft: "1em",
+            paddingTop: "1em",
+            borderLeft: "2px solid silver",
+            display: (isBranch) ? "block" : "none"
+        }}>
+            {
+                listCursors.map((subItemCursor, index) => {
+                    const uuid = subItemCursor.get("uuid");
+
+                    return <Editor
+                        itemCursor={subItemCursor}
+                        index={index}
+                        statics={{
+                            structure,
+                            parentList: list
+                        }}
+                        key={uuid} />;
+                })
+            }
+        </div>
+
+    </div>;
 }).jsx;
 
 
+export {
+    addNode,
+    deleteNode,
+    updateNode
+}
 export default Editor;

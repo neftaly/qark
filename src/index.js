@@ -1,6 +1,6 @@
 "use strict";
 
-import Immstruct from "immstruct";
+import immstruct from "immstruct";
 import init from "./actions";
 
 //require("./modules/react-a11y/lib")();
@@ -10,10 +10,10 @@ import init from "./actions";
  * Init
  */
 
-let structure = new Immstruct("globalState", {
+let structure = immstruct.withHistory("globalState", {
     state: {
         target: location.hash.replace("#", ""),
-        edit: false // Maybe make this a uuid (for single editor)
+        edit: false
     },
     list: require("./resources/example0")
 });

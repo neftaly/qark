@@ -6,12 +6,11 @@ import {
     Panel
 } from "react-bootstrap";
 
-import Editor from "./Editor";
 import Markdown from "./Markdown";
 import Leaf from "./Leaf";
 
 
-const subList = function(stateCursor, level) {
+const subList = (stateCursor, level) => {
     const target = stateCursor.cursor("target").deref();
 
     return (subItemCursor) => {
@@ -26,10 +25,7 @@ const subList = function(stateCursor, level) {
                     key={uuid} />;
         }
 
-        const editMode = stateCursor.cursor("edit").deref();
-
         return <Leaf
-            editMode={editMode}
             itemCursor={subItemCursor}
             active={active}
             statics={{ stateCursor }}
@@ -40,11 +36,13 @@ const subList = function(stateCursor, level) {
 
 
 const BranchHeader = component(({ level, text }) => {
-    return React.createElement(
-        "h" + (level + 1),
-        null,
-        text
-    );
+    const element = "h" + (level + 1);
+    const props = {
+        style: {
+            paddingLeft: level + "rem"
+        }
+    };
+    return React.createElement(element, props, text);
 }).jsx;
 
 
@@ -60,22 +58,13 @@ const BranchHeader = component(({ level, text }) => {
  * @param {Integer} props.level - Current list depth
  */
 const Branch = component(({ itemCursor, stateCursor, level }) => {
-    const editMode = stateCursor.cursor("edit").deref();
+    const { name, description, list } = itemCursor.toObject();
+    const listCursors = list.toArray();
 
-    const name = itemCursor.cursor("name").deref();
-    const description = itemCursor.cursor("description").deref();
+    return <div style={{ marginTop: (level > 1) ? "2em" : "0em" }}>
 
-    const listCursors = itemCursor.cursor("list").toArray();
-
-    return <div style={{
-        marginTop: (level > 1) ? "2em" : "0em",
-        marginLeft: (editMode) ? "2em" : "0em"
-    }}>
-
-        <Editor active={editMode} itemCursor={itemCursor} isBranch={true}>
-            <BranchHeader level={level} text={name} />
-            <Markdown>{description}</Markdown>
-        </Editor>
+        <BranchHeader level={level} text={name} />
+        <Markdown>{description}</Markdown>
 
         <div>{ listCursors.map(subList(stateCursor, level)) }</div>
 
@@ -86,5 +75,5 @@ const Branch = component(({ itemCursor, stateCursor, level }) => {
 export {
     subList,
     BranchHeader
-}
+};
 export default Branch;

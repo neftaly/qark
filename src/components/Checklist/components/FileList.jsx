@@ -20,7 +20,7 @@ const deleteFile = (filesCursor, uuid) => {
             return;
         }
 
-        filesCursor.delete(uuid);
+        filesCursor.deleteIn(uuid);
     };
 };
 

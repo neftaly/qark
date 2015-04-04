@@ -6,8 +6,10 @@ import Checklist from "../components/Checklist";
 
 
 export function renderToDom (structure) {
+    const rootCursor = structure.cursor();
+
     React.render(
-        <Checklist rootCursor={structure.cursor()} />,
+        <Checklist rootCursor={rootCursor} statics={{ structure }}/>,
         document.getElementById("root")
     );
 }
@@ -40,6 +42,7 @@ export default function actions (structure, environment) {
 
     structure.on("change", change);
     structure.on("add", change);
+    structure.on("delete", change);
     structure.on("swap", () => renderToDom(structure));
     return renderToDom(structure);
 }

@@ -15,14 +15,17 @@ export default function leafPercentages (listCursor) {
     let totals = leafTotals(listCursor.toJS(), {
         "true": 0,
         "false": 0,
+        "n/a": 0,
         "null": 0
     });
 
     let percentage = 100 / R.compose(R.sum, R.values)(totals);
 
-    return {
-        "true": totals.true * percentage,
-        "false": totals.false * percentage,
-        "null": totals.null * percentage
-    };
+    return Object.keys(totals).reduce((partial, key) => {
+        const value = totals[key];
+
+        return R.merge(partial, {
+            [key]: value * percentage
+        });
+    }, {});
 };
