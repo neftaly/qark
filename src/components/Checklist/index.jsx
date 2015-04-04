@@ -39,14 +39,19 @@ const Checklist = component(({ rootCursor }) => {
         className="flexColumnContainer"
         style={{ minHeight: "100vh" }}>
 
-        <div
-            className="flex"
-            style={{ overflowX: "auto", overflowY: "scroll" }}
-            id="branchContainer">
+        <div id="branchContainer" className="flex" style={{
+            overflowX: "auto",
+            overflowY: "scroll",
+            paddingBottom: "5em"
+        }}>
             <Branch itemCursor={listCursor} stateCursor={stateCursor} level={0} />
         </div>
 
-        <div className="flexRowContainer">
+        <div className="flexRowContainer" style={{
+            position: "absolute",
+            bottom: "0px",
+            width: "calc(100% - 1em)"
+        }}>
             <Button
                 onClick={tempToggleEditMode}
                 className="pull-left">

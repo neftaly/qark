@@ -20,6 +20,10 @@ import FileAttachButton from "./FileAttachButton";
 
 
 const selectLeaf = (stateCursor, uuid) => {
+    const oldNode = stateCursor.cursor("target").deref();
+    if (uuid === oldNode) {
+        uuid = "";
+    }
     return () => stateCursor.update("target", () => uuid);
 };
 
