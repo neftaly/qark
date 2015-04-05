@@ -1,7 +1,6 @@
 "use strict";
 
 import React from "react";
-import R from "ramda";
 import moment from "moment";
 import uuidGenerator from "uuid";
 import {

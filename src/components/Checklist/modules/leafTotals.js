@@ -18,7 +18,7 @@ export default function leafTotals (branch, partial) {
         }
 
         // Turn the status into a string
-        let type = String(node.status);
+        const type = String(node.status);
         // Increment the count for that status type
         partial[type] = (partial[type] || 0) + 1;
 

@@ -2,7 +2,6 @@
 
 import React from "react";
 import component from "omniscient";
-import R from "ramda";
 import {
     Button,
     ButtonGroup,
@@ -20,9 +19,7 @@ const chooseLeaf = (rootCursor, direction) => {
         let leaves = leafList(listCursor);
 
         let oldLeaf = stateCursor.cursor("target").deref();
-        let oldLeafIndex = R.findIndex((leaf) => {
-            return leaf.path === oldLeaf;
-        }, leaves);
+        let oldLeafIndex = leaves.findIndex((leaf) => leaf.path === oldLeaf);
 
         // TODO: Use array.reduce (or similar)
         let index = oldLeafIndex;

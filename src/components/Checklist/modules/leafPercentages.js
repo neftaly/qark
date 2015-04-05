@@ -1,6 +1,6 @@
 "use strict";
 
-import R from "ramda";
+import objectValues from "object-values";
 import leafTotals from "./leafTotals";
 
 
@@ -12,20 +12,18 @@ import leafTotals from "./leafTotals";
  * @returns {Object} Total of each status type
  */
 export default function leafPercentages (itemCursor) {
-    let totals = leafTotals(itemCursor.toJS(), {
+    const totals = leafTotals(itemCursor.toJS(), {
         "true": 0,
         "false": 0,
         "n/a": 0,
         "null": 0
     });
 
-    let percentage = 100 / R.compose(R.sum, R.values)(totals);
+    const percentage = 100 / objectValues(totals)
+        .reduce((sum, leaf) => sum + leaf);
 
     return Object.keys(totals).reduce((partial, key) => {
-        const value = totals[key];
-
-        return R.merge(partial, {
-            [key]: value * percentage
-        });
+        partial[key] = totals[key] * percentage;
+        return partial;
     }, {});
 };

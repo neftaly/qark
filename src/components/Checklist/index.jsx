@@ -47,8 +47,6 @@ const Checklist = component(({
     stateStructure
 }) => {
 
-    const listCursor = itemCursor.cursor("list");
-
     const editMode = stateCursor.get("edit");
 
     const tempToggleEditMode = () => {

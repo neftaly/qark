@@ -1,7 +1,6 @@
 "use strict";
 
 import React from "react";
-import R from "ramda";
 import component from "omniscient";
 import uuidGenerator from "uuid";
 import Immutable from "immutable";
@@ -43,7 +42,8 @@ const addNode = (list, type) => {
             "files": new Immutable.Map({})
         };
 
-        const node = R.merge(
+        const node = Object.assign(
+            {},
             base,
             (type === "branch") ? branch : leaf
         );

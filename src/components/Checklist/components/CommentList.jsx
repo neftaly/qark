@@ -2,7 +2,6 @@
 
 import React from "react";
 import component from "omniscient";
-import R from "ramda";
 import moment from "moment";
 import {
     Button,

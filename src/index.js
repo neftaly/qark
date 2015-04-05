@@ -3,6 +3,8 @@
 import immstruct from "immstruct";
 import init from "./actions";
 
+require("babelify/polyfill");
+
 //require("./modules/react-a11y/lib")();
 
 
@@ -12,7 +14,7 @@ import init from "./actions";
 
 let stateStructure = immstruct.withHistory("state", {
     target: location.hash.replace("#", ""),
-    edit: true
+    edit: false
 });
 
 let itemStructure = immstruct.withHistory("item",

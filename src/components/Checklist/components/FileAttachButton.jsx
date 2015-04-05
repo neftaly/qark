@@ -2,7 +2,6 @@
 
 import React from "react";
 import component from "omniscient";
-import R from "ramda";
 import uuidGenerator from "uuid";
 import {
     Button,
@@ -10,27 +9,30 @@ import {
 } from "react-bootstrap";
 
 
-const genFilesArray = R.map((fileObject) => {
-    const uuid = uuidGenerator.v4(); // Impure
-    return {
-        uuid,
-        fileObject
-    };
-});
+const genFilesArray = (files) => {
+    return Array.from(files, (fileObject) => {
+        const uuid = uuidGenerator.v4(); // Impure
+        return {
+            uuid,
+            fileObject
+        };
+    });
+};
 
 
-const genFilesObject = R.reduce((partial, file) => {
-    const { uuid, fileObject } = file;
-    const { name, size } = fileObject;
-    return R.merge(partial, {
-        [uuid]: {
+const genFilesObject = (filesArray) => {
+    return filesArray.reduce((partial, file) => {
+        const { uuid, fileObject } = file;
+        const { name, size } = fileObject;
+        partial[uuid] = {
             uuid,
             name,
             size,
-            contents: null // Data placeholder,
-        }
-    });
-}, {});
+            contents: null // Data placeholder
+        };
+        return partial;
+    }, {});
+};
 
 
 const addFiles = (itemCursor) => {
