@@ -19,13 +19,13 @@ import SaveModal from "./components/SaveModal";
 //component.debug();
 
 
-const history = (structure, distance) => {
+const history = (stateStructure, distance) => {
     return () => {
-        const direction = (distance < 0) ? "undo" : "redo";
+        const action = (distance < 0) ? "undo" : "redo";
         const steps = Math.abs(distance);
 
-        structure[direction](steps);
-        structure.forceHasSwapped();
+        stateStructure[action](steps);
+        stateStructure.forceHasSwapped();
     };
 };
 
@@ -39,9 +39,15 @@ const history = (structure, distance) => {
  * @namespace components
  * @param {Immstruct.cursor} props.rootCursor
  */
-const Checklist = component(({ rootCursor }, { structure }) => {
-    const stateCursor = rootCursor.cursor("state");
-    const listCursor = rootCursor.cursor("list");
+const Checklist = component(({
+    itemCursor,
+    stateCursor
+}, {
+    itemStructure,
+    stateStructure
+}) => {
+
+    const listCursor = itemCursor.cursor("list");
 
     const editMode = stateCursor.get("edit");
 
@@ -59,9 +65,8 @@ const Checklist = component(({ rootCursor }, { structure }) => {
                 overflowY: "scroll",
                 paddingBottom: "5em"
             }}>
-                <Editor itemCursor={listCursor} statics={{
-                    structure,
-                    parentCursor: rootCursor
+                <Editor itemCursor={itemCursor} statics={{
+                    itemStructure
                 }} />
             </div>
 
@@ -80,11 +85,11 @@ const Checklist = component(({ rootCursor }, { structure }) => {
                 </Button>
                 <ButtonGroup className="pull-right">
                     <Button
-                        onClick={ history(structure, -1) }>
+                        onClick={ history(stateStructure, -1) }>
                         Undo
                     </Button>
                     <Button
-                        onClick={ history(structure, +1) }>
+                        onClick={ history(stateStructure, +1) }>
                         Redo
                     </Button>
                 </ButtonGroup>
@@ -104,7 +109,7 @@ const Checklist = component(({ rootCursor }, { structure }) => {
             overflowY: "scroll",
             paddingBottom: "5em"
         }}>
-            <Branch itemCursor={listCursor} stateCursor={stateCursor} level={0} />
+            <Branch itemCursor={itemCursor} stateCursor={stateCursor} level={0} />
         </div>
 
         <div className="flexRowContainer" style={{
@@ -120,11 +125,11 @@ const Checklist = component(({ rootCursor }, { structure }) => {
                 Toggle edit mode
             </Button>
             <StatusBar
-                listCursor={listCursor}
+                itemCursor={itemCursor}
                 bsSize="large"
                 className="flex pull-left" />
             <ButtonToolbar className="pull-right">
-                <LeafChooser rootCursor={rootCursor} />
+                <LeafChooser stateCursor={stateCursor} />
             </ButtonToolbar>
         </div>
 

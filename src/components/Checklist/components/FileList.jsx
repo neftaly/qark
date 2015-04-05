@@ -14,12 +14,12 @@ import {
 const deleteFile = (filesCursor, uuid) => {
     return () => {
         if (filesCursor.cursor(uuid).cursor("contents").deref() === null) {
+            console.log("Cannot delete file; update pending");
             // Update still pending, don't delete yet.
             // This check can be removed when FileAttachButton uses references.
             return;
         }
-
-        filesCursor.deleteIn(uuid);
+        filesCursor.delete(uuid);
     };
 };
 

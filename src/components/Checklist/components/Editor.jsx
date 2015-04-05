@@ -54,14 +54,13 @@ const addNode = (list, type) => {
 
 
 const deleteNode = (parentList, index) => {
-    return () => parentList.delete(index);
+    return () => {
+        parentList.delete(index);
+    };
 };
 
 
-const Editor = component((
-    { itemCursor, index },
-    { structure, parentList }
-) => {
+const Editor = component(({ itemCursor, index, parentList }) => {
 
     const { name, description, list, uuid } = itemCursor.toObject();
     const isBranch = !!list;
@@ -118,15 +117,12 @@ const Editor = component((
             display: (isBranch) ? "block" : "none"
         }}>
             {
-                listCursors.map((subItemCursor, index) => {
+                listCursors.map((subItemCursor, subIndex) => {
                     return <Editor
                         itemCursor={subItemCursor}
-                        index={index}
-                        statics={{
-                            structure,
-                            parentList: list
-                        }}
-                        key={index} />;
+                        index={subIndex}
+                        parentList={list}
+                        key={subIndex} />;
                 })
             }
         </div>

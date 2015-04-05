@@ -5,18 +5,22 @@ import React from "react";
 import Checklist from "../components/Checklist";
 
 
-export function renderToDom (structure) {
-    const rootCursor = structure.cursor();
+export function renderToDom (structures) {
+    const stateCursor = structures.stateStructure.cursor();
+    const itemCursor = structures.itemStructure.cursor();
 
     React.render(
-        <Checklist rootCursor={rootCursor} statics={{ structure }}/>,
+        <Checklist
+            stateCursor={stateCursor}
+            itemCursor={itemCursor}
+            statics={structures}/>,
         document.getElementById("root")
     );
 }
 
 
 export function stateChange (path, newValue) {
-    switch (path[1]) {
+    switch (path[0]) {
     case "target":
         history.replaceState(null, null, "#" + newValue);
         break;
@@ -27,22 +31,23 @@ export function stateChange (path, newValue) {
 
 
 export default function actions (structure, environment) {
-    let change = (path, newValue, oldValue) => {
-        if (window.debug) {
-            console.info("path:", path);
-            console.info("oldValue:", oldValue);
-            console.info("newValue:", newValue);
-            console.info(JSON.stringify(structure.cursor().toJS(), null, 4));
-        }
-
-        if (path[0] === "state") {
-            stateChange(path, newValue, oldValue);
-        }
+    let change = (storeName) => {
+        return (path, newValue, oldValue) => {
+            console.log("Change in " + storeName);
+            if (storeName === "state") {
+                stateChange(path, newValue, oldValue);
+            }
+        };
     };
 
-    structure.on("change", change);
-    structure.on("add", change);
-    structure.on("delete", change);
-    structure.on("swap", () => renderToDom(structure));
+    // Attach handlers to every store
+    ["change", "add", "delete"].forEach((action) => {
+        Object.keys(structure).forEach((storeName) => {
+            let store = structure[storeName];
+            store.on(action, change(storeName));
+            store.on("swap", () => renderToDom(structure));
+        });
+    });
+
     return renderToDom(structure);
 }

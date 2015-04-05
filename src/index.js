@@ -10,12 +10,13 @@ import init from "./actions";
  * Init
  */
 
-let structure = immstruct.withHistory("globalState", {
-    state: {
-        target: location.hash.replace("#", ""),
-        edit: false
-    },
-    list: require("./resources/example0")
+let stateStructure = immstruct.withHistory("state", {
+    target: location.hash.replace("#", ""),
+    edit: true
 });
 
-init(structure);
+let itemStructure = immstruct.withHistory("item",
+    require("./resources/example0")
+);
+
+init({ stateStructure, itemStructure });

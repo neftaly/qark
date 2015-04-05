@@ -11,8 +11,8 @@ import leafTotals from "./leafTotals";
  * @param {Immstruct.cursor} listCursor - Tree to search through
  * @returns {Object} Total of each status type
  */
-export default function leafPercentages (listCursor) {
-    let totals = leafTotals(listCursor.toJS(), {
+export default function leafPercentages (itemCursor) {
+    let totals = leafTotals(itemCursor.toJS(), {
         "true": 0,
         "false": 0,
         "n/a": 0,

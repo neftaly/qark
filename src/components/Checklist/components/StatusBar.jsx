@@ -23,8 +23,8 @@ import leafPercentages from "../modules/leafPercentages";
  * @param {string} props.style
  * @param {string} props.bsStyle
  */
-const StatusBar = component(({ listCursor, className, style, bsStyle }) => {
-    const percentages = leafPercentages(listCursor);
+const StatusBar = component(({ itemCursor, className, style, bsStyle }) => {
+    const percentages = leafPercentages(itemCursor);
     // Float bug fix (total percentage may add to more than 100%)
     const truePercentageFixed = Math.floor(percentages.true);
 
