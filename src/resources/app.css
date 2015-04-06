@@ -7,10 +7,6 @@ button:focus {
  * Temporary
  */
 
-.branchContainer {
-    scroll-behavior: smooth;
-}
-
 
 .flexRowContainer,
 .flexColumnContainer {

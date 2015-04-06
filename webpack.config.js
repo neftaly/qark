@@ -2,7 +2,7 @@
 
 var path = require("path");
 var webpack = require("webpack");
-
+//noParse: /lie\.js$|\/leveldown\//
 module.exports = {
     devtool: "eval",
     entry: [

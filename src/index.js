@@ -1,8 +1,8 @@
 "use strict";
 
 import immstruct from "immstruct";
-import init from "./actions";
 
+import init from "./actions";
 require("babelify/polyfill");
 
 //require("./modules/react-a11y/lib")();
@@ -21,4 +21,7 @@ let itemStructure = immstruct.withHistory("item",
     require("./resources/example0")
 );
 
-init({ stateStructure, itemStructure });
+init({
+    stateStructure,
+    itemStructure
+});

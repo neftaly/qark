@@ -30,7 +30,8 @@ export function stateChange (path, newValue) {
 }
 
 
-export default function actions (structure, environment) {
+export default function actions (structure) {
+
     let change = (storeName) => {
         return (path, newValue, oldValue) => {
             console.log("Change in " + storeName);

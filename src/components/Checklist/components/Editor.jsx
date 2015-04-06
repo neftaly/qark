@@ -2,138 +2,76 @@
 
 import React from "react";
 import component from "omniscient";
-import uuidGenerator from "uuid";
-import Immutable from "immutable";
 import {
     Button,
-    Panel,
-    Input,
-    Well
+    ButtonGroup,
+    ButtonToolbar
 } from "react-bootstrap";
 
-import Markdown from "./Markdown";
+import history from "../modules/history";
+import EditorTree from "./EditorTree";
+import {
+    Layout,
+    LayoutHeader,
+    LayoutBody
+} from "../../Layout";
 
 
-const updateNode = (itemCursor, name, newValue) => {
-    return (event) => {
-        const value = (newValue !== undefined) ?
-            newValue : event.target.value;
-
-        itemCursor.update(name, () => value);
-    };
-};
+const mode = (stateCursor) => {
+    return stateCursor.get("edit");
+}
 
 
-const addNode = (list, type) => {
+const toggle = (stateCursor) => {
     return () => {
-        const base = {
-            "name": "Untitled Node",
-            "uuid": uuidGenerator.v4(),
-            "description": ""
-        };
-
-        const branch = {
-            "list": new Immutable.List([])
-        };
-
-        const leaf = {
-            "status": null,
-            "comments": new Immutable.Map({}),
-            "files": new Immutable.Map({})
-        };
-
-        const node = Object.assign(
-            {},
-            base,
-            (type === "branch") ? branch : leaf
-        );
-
-        list.push(new Immutable.Map(node));
-    };
+        const editMode = mode(stateCursor);
+        return stateCursor.update("edit", () => !editMode);
+    }
 };
 
 
-const deleteNode = (parentList, index) => {
-    return () => {
-        parentList.delete(index);
-    };
-};
+const Editor = component(({
+    itemCursor,
+    stateCursor
+}, {
+    itemStructure,
+    stateStructure
+}) => {
 
-
-const Editor = component(({ itemCursor, index, parentList }) => {
-
-    const { name, description, list, uuid } = itemCursor.toObject();
-    const isBranch = !!list;
-    const listCursors = isBranch ? list.toArray() : [];
-
-    return <div id={uuid}>
-        <form className="clearfix form-horizontal">
-            <Panel header={ (isBranch ? "Branch" : "Leaf" ) + " node" }>
-
-                <Input
-                    labelClassName='col-xs-2'
-                    wrapperClassName='col-xs-10'
-                    label="Title"
-                    type="text"
-                    value={name}
-                    onChange={ updateNode(itemCursor, "name") } />
-
-                <Input
-                    labelClassName='col-xs-2'
-                    wrapperClassName='col-xs-10'
-                    label="Description"
-                    type="textarea"
-                    value={description}
-                    onChange={ updateNode(itemCursor, "description") } />
-
-                <Button disabled={!isBranch}
-                    onClick={ addNode(list, "branch") }>
-                    Add child branch
+    return <Layout>
+        <LayoutHeader>
+            <Button
+                onClick={ toggle(stateCursor) }
+                bsStyle="success"
+                className="pull-right">
+                Toggle edit mode
+            </Button>
+            <ButtonGroup className="pull-right">
+                <Button
+                    onClick={ history(itemStructure, -1) }>
+                    Undo
                 </Button>
-
-                <Button disabled={!isBranch}
-                    onClick={ addNode(list, "leaf") }>
-                    Add child leaf
+                <Button
+                    onClick={ history(itemStructure, +1) }>
+                    Redo
                 </Button>
+            </ButtonGroup>
+        </LayoutHeader>
 
-                <Button disabled={!parentList}
-                    onClick={ deleteNode(parentList, index) }>
-                    Delete this node
-                </Button>
+        <LayoutBody>
+            <EditorTree
+                itemCursor={itemCursor}
+                statics={{
+                    itemStructure
+                }} />
+        </LayoutBody>
 
-            </Panel>
-            <Well>
-                <h3>{name}</h3>
-                <Markdown>{description}</Markdown>
-            </Well>
-        </form>
-
-        <div style={{
-            marginLeft: "1em",
-            marginBottom: "1em",
-            paddingLeft: "1em",
-            paddingTop: "1em",
-            borderLeft: "2px solid silver",
-            display: (isBranch) ? "block" : "none"
-        }}>
-            {
-                listCursors.map((subItemCursor, subIndex) => {
-                    return <Editor
-                        itemCursor={subItemCursor}
-                        index={subIndex}
-                        parentList={list}
-                        key={subIndex} />;
-                })
-            }
-        </div>
-
-    </div>;
+    </Layout>;
 }).jsx;
 
 
 export {
-    addNode,
-    deleteNode,
-    updateNode
-}
+    mode,
+    toggle
+};
 export default Editor;

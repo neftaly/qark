@@ -10,7 +10,6 @@
     "moment": "^2.9.0",
     "object-values": "^1.0.0",
     "omniscient": "^3.1.0",
-    "pouchdb": "^3.3.1",
     "react": "^0.13.0",
     "react-bootstrap": "^0.17.0",
     "remarkable": "^1.6.0",

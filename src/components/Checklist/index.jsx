@@ -10,24 +10,17 @@ import {
     ButtonToolbar
 } from "react-bootstrap";
 
+import history from "./modules/history";
 import Editor from "./components/Editor";
 import Branch from "./components/Branch";
-import StatusBar from "./components/StatusBar";
-import LeafChooser from "./components/LeafChooser";
 import SaveModal from "./components/SaveModal";
+import {
+    Layout,
+    LayoutHeader,
+    LayoutBody
+} from "../Layout";
 
 //component.debug();
-
-
-const history = (stateStructure, distance) => {
-    return () => {
-        const action = (distance < 0) ? "undo" : "redo";
-        const steps = Math.abs(distance);
-
-        stateStructure[action](steps);
-        stateStructure.forceHasSwapped();
-    };
-};
 
 
 /**
@@ -48,80 +41,28 @@ const Checklist = component(({
 }) => {
 
     const editMode = stateCursor.get("edit");
-
-    const tempToggleEditMode = () => {
-        stateCursor.update("edit", () => !editMode);
-    };
+    const toggleEditMode = () => stateCursor.update("edit", () => !editMode);
+    // const editMode = Editor.mode(stateCursor);
+    // const toggleEditMode = Editor.toggle(stateCursor);
 
     if (editMode) {
-        return <div
-            className="flexColumnContainer"
-            style={{ minHeight: "100vh" }}>
-
-            <div id="branchContainer" className="flex" style={{
-                overflowX: "auto",
-                overflowY: "scroll",
-                paddingBottom: "5em"
-            }}>
-                <Editor itemCursor={itemCursor} statics={{
-                    itemStructure
-                }} />
-            </div>
-
-            <div style={{
-                backgroundColor: "white",
-                borderTop: "1px solid grey",
-                position: "absolute",
-                bottom: "0px",
-                width: "calc(100% - 1em)"
-            }}>
-                <Button
-                    onClick={tempToggleEditMode}
-                    bsStyle="success"
-                    className="pull-left">
-                    Toggle edit mode
-                </Button>
-                <ButtonGroup className="pull-right">
-                    <Button
-                        onClick={ history(stateStructure, -1) }>
-                        Undo
-                    </Button>
-                    <Button
-                        onClick={ history(stateStructure, +1) }>
-                        Redo
-                    </Button>
-                </ButtonGroup>
-            </div>
-
-        </div>;
+        return <Editor
+            itemCursor={itemCursor}
+            stateCursor={stateCursor}
+            statics={{
+                itemStructure,
+                stateStructure
+            }} />;
     }
 
-    return <div className="flexColumnContainer" style={{
-        backgroundColor: "white",
-        borderTop: "1px solid grey",
-        minHeight: "100vh"
-    }}>
-
-        <div id="branchContainer" className="flex" style={{
-            overflowX: "auto",
-            overflowY: "scroll",
-            paddingBottom: "5em"
-        }}>
-            <Branch itemCursor={itemCursor} stateCursor={stateCursor} level={0} />
-        </div>
-
-        <div className="flexRowContainer" style={{
-            backgroundColor: "white",
-            borderTop: "1px solid grey",
-            position: "absolute",
-            bottom: "0px",
-            width: "calc(100% - 1em)"
-        }}>
+    return <Layout>
+        <LayoutHeader>
             <Button
-                onClick={tempToggleEditMode}
-                className="pull-left">
+                onClick={toggleEditMode}
+                className="pull-right">
                 Toggle edit mode
             </Button>
+            {/*
             <StatusBar
                 itemCursor={itemCursor}
                 bsSize="large"
@@ -129,9 +70,16 @@ const Checklist = component(({
             <ButtonToolbar className="pull-right">
                 <LeafChooser stateCursor={stateCursor} />
             </ButtonToolbar>
-        </div>
+            */}
+        </LayoutHeader>
 
-    </div>;
+        <LayoutBody>
+            <Branch
+                itemCursor={itemCursor}
+                stateCursor={stateCursor}
+                level={0} />
+        </LayoutBody>
+    </Layout>;
 
 }).jsx;
 
