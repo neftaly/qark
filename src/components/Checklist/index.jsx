@@ -10,8 +10,8 @@ import {
     ButtonToolbar
 } from "react-bootstrap";
 
-import history from "./modules/history";
-import Editor from "./components/Editor";
+import history from "../../modules/history";
+import ChecklistEditor from "../ChecklistEditor";
 import Branch from "./components/Branch";
 import SaveModal from "./components/SaveModal";
 import {
@@ -46,7 +46,7 @@ const Checklist = component(({
     // const toggleEditMode = Editor.toggle(stateCursor);
 
     if (editMode) {
-        return <Editor
+        return <ChecklistEditor
             itemCursor={itemCursor}
             stateCursor={stateCursor}
             statics={{

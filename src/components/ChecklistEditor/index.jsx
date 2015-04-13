@@ -3,18 +3,20 @@
 import React from "react";
 import component from "omniscient";
 import {
+    Grid,
+    Col,
     Button,
     ButtonGroup,
     ButtonToolbar
 } from "react-bootstrap";
 
-import history from "../modules/history";
-import EditorTree from "./EditorTree";
+import History from "../History";
+import Tree from "./components/Tree";
 import {
     Layout,
     LayoutHeader,
     LayoutBody
-} from "../../Layout";
+} from "../Layout";
 
 
 const mode = (stateCursor) => {
@@ -30,7 +32,7 @@ const toggle = (stateCursor) => {
 };
 
 
-const Editor = component(({
+const ChecklistEditor = component(({
     itemCursor,
     stateCursor
 }, {
@@ -46,20 +48,15 @@ const Editor = component(({
                 className="pull-right">
                 Toggle edit mode
             </Button>
-            <ButtonGroup className="pull-right">
-                <Button
-                    onClick={ history(itemStructure, -1) }>
-                    Undo
-                </Button>
-                <Button
-                    onClick={ history(itemStructure, +1) }>
-                    Redo
-                </Button>
-            </ButtonGroup>
+            <History
+                className="pull-right"
+                statics={{
+                    itemStructure
+                }} />
         </LayoutHeader>
 
         <LayoutBody>
-            <EditorTree
+            <Tree
                 itemCursor={itemCursor}
                 statics={{
                     itemStructure
@@ -74,4 +71,4 @@ export {
     mode,
     toggle
 };
-export default Editor;
+export default ChecklistEditor;

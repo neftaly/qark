@@ -11,7 +11,7 @@ import {
     Well
 } from "react-bootstrap";
 
-import Markdown from "./Markdown";
+import Markdown from "../../Markdown";
 
 
 const updateNode = (itemCursor, name, newValue) => {
@@ -60,7 +60,7 @@ const deleteNode = (parentList, index) => {
 };
 
 
-const EditorTree = component(({ itemCursor, index, parentList }) => {
+const Tree = component(({ itemCursor, index, parentList }) => {
 
     const { name, description, list, uuid } = itemCursor.toObject();
     const isBranch = !!list;
@@ -118,7 +118,7 @@ const EditorTree = component(({ itemCursor, index, parentList }) => {
         }}>
             {
                 listCursors.map((subItemCursor, subIndex) => {
-                    return <EditorTree
+                    return <Tree
                         itemCursor={subItemCursor}
                         index={subIndex}
                         parentList={list}
@@ -136,4 +136,4 @@ export {
     deleteNode,
     updateNode
 }
-export default EditorTree;
+export default Tree;

@@ -9,7 +9,7 @@ import {
     ButtonGroup
 } from "react-bootstrap";
 
-import Markdown from "./Markdown";
+import Markdown from "../../Markdown";
 import StatusIcon from "./StatusIcon";
 import StatusToggle from "./StatusToggle";
 import CommentList from "./CommentList";

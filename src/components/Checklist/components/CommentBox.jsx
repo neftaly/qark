@@ -9,7 +9,7 @@ import {
     ButtonGroup
 } from "react-bootstrap";
 
-import Markdown from "./Markdown";
+import Markdown from "../../Markdown";
 
 
 const CommentBox = React.createClass({

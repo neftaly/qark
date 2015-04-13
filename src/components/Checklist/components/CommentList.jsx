@@ -11,7 +11,7 @@ import {
     ListGroupItem
 } from "react-bootstrap";
 
-import Markdown from "./Markdown";
+import Markdown from "../../Markdown";
 import CommentBox from "./CommentBox";
 
 

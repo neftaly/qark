@@ -3,18 +3,18 @@
 /**
  * History monad
  *
- * @param {Immstruct} stateStructure
+ * @param {Immstruct} structure
  * @param {Integer} distance
  * @returns {Function}
  */
-export default function history (stateStructure, distance) {
+export default function history (structure, distance) {
     return () => {
         const action = (distance < 0) ? "undo" : "redo";
         const steps = Math.abs(distance);
 
-        stateStructure[action](steps);
-        stateStructure.forceHasSwapped();
+        structure[action](steps);
+        structure.forceHasSwapped();
 
-        return stateStructure;
+        return structure;
     };
 };
