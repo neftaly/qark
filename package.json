@@ -2,7 +2,7 @@
   "scripts": {
     "start": "node server.js",
     "build": "./node_modules/.bin/gulp build",
-    "deploy": "npm run --production build && cd dist && netlify deploy"
+    "deploy": "npm run --production build"
   },
   "dependencies": {
     "immstruct": "^1.4.0",

@@ -49,7 +49,7 @@ gulp.task("lint", function () {
 
 gulp.task("html", function () {
     return gulp.src("./src/resources/index.html")
-        .pipe(gulp.dest("./dist"));
+        .pipe(gulp.dest("./docs"));
 });
 
 
@@ -67,7 +67,7 @@ gulp.task("scss", function () {
         }))
         .pipe(concat("app.min.css"))
         //.pipe(sourcemaps.write("."))
-        .pipe(gulp.dest("./dist"));
+        .pipe(gulp.dest("./docs"));
 });
 
 
@@ -85,7 +85,7 @@ function bundleJs () {
         //.pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(uglify())
         //.pipe(sourcemaps.write("./"))
-        .pipe(gulp.dest("./dist"));
+        .pipe(gulp.dest("./docs"));
 }
 
 bundler = browserify(["./src/index.js"], {
